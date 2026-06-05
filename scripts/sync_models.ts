@@ -1,12 +1,13 @@
-// Set environment variable BEFORE anything else is imported
-process.env.DATABASE_URL = "postgresql://neondb_owner:npg_1MRIPoknF7Cf@ep-polished-grass-aoykegh0.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+import { loadEnvConfig } from "@next/env";
+loadEnvConfig(process.cwd());
 
 async function sync() {
   const { prisma } = await import('../lib/db');
 
   const apps = await prisma.app.findMany();
   for (const app of apps) {
-    const configModels: any = (app.config as any)?.models ?? [];
+    const config = app.config as Record<string, unknown> | null;
+    const configModels = (config?.models as Array<{ name: string; [key: string]: unknown }>) ?? [];
     if (configModels.length > 0) {
       console.log(`Syncing models for app ${app.id}...`);
       for (const m of configModels) {
