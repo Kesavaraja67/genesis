@@ -79,9 +79,9 @@ export async function POST(
     // Step 4: Remove AppModels that no longer exist in config
     const configModelNames = new Set(normalizedModels.map(m => m.name));
     const existingModels = await prisma.appModel.findMany({ where: { appId } });
-    const toDelete = existingModels.filter(m => !configModelNames.has(m.name));
+    const toDelete = existingModels.filter((m: { id: string; name: string }) => !configModelNames.has(m.name));
     if (toDelete.length > 0) {
-      await prisma.appModel.deleteMany({ where: { id: { in: toDelete.map(m => m.id) } } });
+      await prisma.appModel.deleteMany({ where: { id: { in: toDelete.map((m: { id: string }) => m.id) } } });
     }
 
     // Step 5: Sync workflows
