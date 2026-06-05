@@ -52,12 +52,21 @@ export function LoginForm({ mode }: LoginFormProps) {
         redirect: false,
       });
 
+      console.log("NextAuth Result:", result);
+
       if (result?.error) {
         toast.error(result.error);
+      } else if (result?.url && result.url.includes("error=")) {
+        const urlObj = new URL(result.url);
+        const errorParam = urlObj.searchParams.get("error");
+        toast.error(`NextAuth Error: ${errorParam}. Check Vercel Server Logs!`);
       } else {
         router.push("/dashboard");
         router.refresh();
       }
+    } catch (e: unknown) {
+      console.error("Login Exception:", e);
+      toast.error("An unexpected error occurred during login.");
     } finally {
       setLoading(false);
     }
