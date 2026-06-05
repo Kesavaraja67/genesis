@@ -50,6 +50,7 @@ export function LoginForm({ mode }: LoginFormProps) {
         email: form.email,
         password: form.password,
         redirect: false,
+        callbackUrl: "/dashboard",
       });
       console.log("NextAuth Result:", result);
 
