@@ -2,7 +2,7 @@
 // components/auth/LoginForm.tsx
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { loginAction } from "@/lib/auth/actions";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/Input";
 import toast from "react-hot-toast";
@@ -46,21 +46,12 @@ export function LoginForm({ mode }: LoginFormProps) {
         toast.success("Account created! Signing you in…");
       }
 
-      const result = await signIn("credentials", {
-        email: form.email,
-        password: form.password,
-        redirect: false,
-      });
-
+      const result = await loginAction(form.email, form.password);
       console.log("NextAuth Result:", result);
 
       if (result?.error) {
         toast.error(result.error);
-      } else if (result?.url && result.url.includes("error=")) {
-        const urlObj = new URL(result.url);
-        const errorParam = urlObj.searchParams.get("error");
-        toast.error(`NextAuth Error: ${errorParam}. Check Vercel Server Logs!`);
-      } else {
+      } else if (result?.success) {
         router.push("/dashboard");
         router.refresh();
       }
