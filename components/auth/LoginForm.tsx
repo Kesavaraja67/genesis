@@ -3,9 +3,10 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/Input";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 interface LoginFormProps {
   mode: "login" | "register";
@@ -13,9 +14,16 @@ interface LoginFormProps {
 
 export function LoginForm({ mode }: LoginFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (searchParams.get("error") === "CredentialsSignin") {
+      toast.error("Invalid email or password");
+    }
+  }, [searchParams]);
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -46,22 +54,13 @@ export function LoginForm({ mode }: LoginFormProps) {
         toast.success("Account created! Signing you in…");
       }
 
-      const result = await signIn("credentials", {
+      // Remove redirect: false so NextAuth performs a standard HTTP 302 redirect.
+      // This guarantees the Set-Cookie header is sent alongside the Location header.
+      await signIn("credentials", {
         email: form.email,
         password: form.password,
-        redirect: false,
         callbackUrl: "/dashboard",
       });
-      console.log("NextAuth Result:", result);
-
-      if (result?.error || result?.url?.includes("error=")) {
-        console.log("NextAuth returned error or error URL:", result?.error || result?.url);
-        toast.error("Invalid email or password");
-      } else {
-        console.log("No error from NextAuth. Executing hard redirect to /dashboard");
-        // HARD REDIRECT to bypass Next.js router cache
-        window.location.href = "/dashboard";
-      }
     } catch (e: unknown) {
       console.error("Login Exception in catch block:", e);
       toast.error("An unexpected error occurred during login.");
