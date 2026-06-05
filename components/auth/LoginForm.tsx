@@ -51,15 +51,18 @@ export function LoginForm({ mode }: LoginFormProps) {
         password: form.password,
         redirect: false,
       });
+      console.log("NextAuth Result:", result);
 
       if (result?.error) {
+        console.log("NextAuth returned error:", result.error);
         toast.error(result.error);
       } else {
+        console.log("No error from NextAuth. Executing hard redirect to /dashboard");
         // HARD REDIRECT to bypass Next.js router cache
         window.location.href = "/dashboard";
       }
     } catch (e: unknown) {
-      console.error("Login Exception:", e);
+      console.error("Login Exception in catch block:", e);
       toast.error("An unexpected error occurred during login.");
     } finally {
       setLoading(false);
