@@ -1,0 +1,270 @@
+/* app/globals.css — Genesis Design System v2 — Palette 3: Silver / Pine / Lavender / Mauve */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* ─── Design Tokens ───────────────────────────────────────────────────────── */
+:root {
+  /* === BACKGROUNDS === */
+  --bg-base:              #0D0D0F;
+  --bg-surface:           #141418;
+  --bg-elevated:          #1C1C22;
+  --bg-overlay:           #222229;
+  --bg-input:             #18181E;
+
+  /* === BORDERS === */
+  --border-subtle:        #2A2A33;
+  --border-default:       #363640;
+  --border-focus:         #4A6C6F;
+  --border-error:         #AF5D63;
+
+  /* === TEXT === */
+  --text-primary:         #C0BCB5;
+  --text-secondary:       #7A7870;
+  --text-disabled:        #4A4A50;
+  --text-inverse:         #0D0D0F;
+  --text-link:            #4A6C6F;
+  --text-link-hover:      #5D8385;
+
+  /* === BRAND COLORS === */
+  --pine:                 #4A6C6F;
+  --pine-hover:           #5D8385;
+  --pine-muted:           #2D4547;
+  --lavender:             #846075;
+  --lavender-hover:       #9B7389;
+  --lavender-muted:       #3D2D38;
+  --mauve:                #AF5D63;
+  --mauve-hover:          #C4727A;
+  --mauve-muted:          #3D2326;
+  --silver:               #C0BCB5;
+  --silver-muted:         #2A2A2F;
+
+  /* === SEMANTIC COLORS === */
+  --color-success:        #5A9E7A;
+  --color-success-muted:  #1D3328;
+  --color-warning:        #B8935A;
+  --color-warning-muted:  #312510;
+  --color-error:          #AF5D63;
+  --color-error-muted:    #3D2326;
+  --color-info:           #4A6C6F;
+  --color-info-muted:     #1A2D2E;
+
+  /* === TYPOGRAPHY === */
+  --font-display:         'DM Sans', sans-serif;
+  --font-body:            'DM Sans', sans-serif;
+  --font-mono:            'JetBrains Mono', monospace;
+
+  /* === FONT SIZES === */
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-md:   17px;
+  --text-lg:   20px;
+  --text-xl:   24px;
+  --text-2xl:  30px;
+  --text-3xl:  38px;
+  --text-4xl:  48px;
+
+  /* === FONT WEIGHTS === */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* === LINE HEIGHTS === */
+  --leading-tight:    1.2;
+  --leading-snug:     1.4;
+  --leading-normal:   1.6;
+  --leading-relaxed:  1.8;
+
+  /* === LETTER SPACING === */
+  --tracking-tight:   -0.02em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.04em;
+  --tracking-widest:   0.12em;
+
+  /* === SPACING === */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* === BORDER RADIUS === */
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* === SHADOWS === */
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:    0 4px 12px rgba(0,0,0,0.5);
+  --shadow-lg:    0 8px 32px rgba(0,0,0,0.6);
+  --shadow-pine:  0 0 20px rgba(74,108,111,0.2);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.04);
+
+  /* === TRANSITIONS === */
+  --transition-fast:   100ms ease;
+  --transition-base:   200ms ease;
+  --transition-slow:   350ms ease;
+  --transition-spring: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── Base Styles ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--border-focus); }
+
+/* ─── Selection ───────────────────────────────────────────────────────────── */
+::selection { background: rgba(74, 108, 111, 0.35); color: var(--text-primary); }
+
+/* ─── Focus Ring ──────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 108, 111, 0.25);
+}
+
+/* ─── Starfield ───────────────────────────────────────────────────────────── */
+.starfield {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  animation: twinkle var(--dur, 4s) ease-in-out infinite var(--delay, 0s);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: var(--min-opacity, 0.1); }
+  50%       { opacity: var(--max-opacity, 0.4); }
+}
+
+/* ─── Skeleton / Shimmer ──────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    var(--bg-overlay)  50%,
+    var(--bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ─── Page Transition ─────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(110%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+.animate-fade-in    { animation: fadeIn 200ms ease-out forwards; }
+.animate-slide-up   { animation: slideUp 250ms ease-out forwards; }
+.animate-scale-in   { animation: scaleIn 250ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-slide-in-r { animation: slideInRight 250ms ease-out forwards; }
+.animate-pulse-dot  { animation: pulse-dot 2s ease-in-out infinite; }
+
+/* ─── Status Badge Utilities (backwards-compat) ──────────────────────────── */
+.badge-pine     { background: var(--pine-muted);           color: var(--pine); }
+.badge-lavender { background: var(--lavender-muted);       color: var(--lavender); }
+.badge-mauve    { background: var(--mauve-muted);          color: var(--mauve); }
+.badge-success  { background: var(--color-success-muted);  color: var(--color-success); }
+.badge-warning  { background: var(--color-warning-muted);  color: var(--color-warning); }
+.badge-silver   { background: var(--silver-muted);         color: var(--silver); }
+
+/* Legacy badge names → mapped to new palette */
+.badge-active    { background: var(--pine-muted);          color: var(--pine); }
+.badge-draft     { background: var(--lavender-muted);      color: var(--lavender); }
+.badge-error     { background: var(--mauve-muted);         color: var(--mauve); }
+.badge-building  { background: var(--color-warning-muted); color: var(--color-warning); }
+.badge-running   { background: var(--color-info-muted);    color: var(--color-info); }
+.badge-failed    { background: var(--mauve-muted);         color: var(--mauve); }
+.badge-cancelled { background: var(--silver-muted);        color: var(--text-secondary); }
+
+/* ─── Monaco Editor Overrides ────────────────────────────────────────────── */
+.monaco-editor { border-radius: 0 !important; }
+.monaco-editor .margin { background: var(--bg-base) !important; }
+
+/* ─── Connector line for workflow steps ──────────────────────────────────── */
+.step-connector {
+  width: 2px;
+  height: 24px;
+  background: var(--border-default);
+  margin: 0 auto;
+}
+
+/* ─── Offline Banner ─────────────────────────────────────────────────────── */
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes slideUp2 {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-100%); }
+}

@@ -1,0 +1,417 @@
+{
+  "app": {
+    "name": "ProjectFlow",
+    "description": "A project and task management system",
+    "version": "1.0.0",
+    "theme": "dark"
+  },
+  "models": [
+    {
+      "name": "Project",
+      "label": "Projects",
+      "icon": "folder",
+      "fields": [
+        {
+          "name": "title",
+          "label": "Project Title",
+          "type": "text",
+          "required": true,
+          "searchable": true,
+          "placeholder": "Enter project title",
+          "default": "",
+          "validation": { "minLength": 3, "maxLength": 100 }
+        },
+        {
+          "name": "status",
+          "label": "Status",
+          "type": "select",
+          "required": true,
+          "options": ["planning", "active", "on_hold", "completed", "cancelled"],
+          "default": "planning"
+        },
+        {
+          "name": "priority",
+          "label": "Priority",
+          "type": "select",
+          "required": true,
+          "options": ["low", "medium", "high", "critical"],
+          "default": "medium"
+        },
+        {
+          "name": "description",
+          "label": "Description",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Describe the project",
+          "default": ""
+        },
+        {
+          "name": "startDate",
+          "label": "Start Date",
+          "type": "date",
+          "required": true,
+          "placeholder": "YYYY-MM-DD",
+          "default": ""
+        },
+        {
+          "name": "dueDate",
+          "label": "Due Date",
+          "type": "date",
+          "required": true,
+          "placeholder": "YYYY-MM-DD",
+          "default": ""
+        },
+        {
+          "name": "budget",
+          "label": "Budget ($)",
+          "type": "number",
+          "required": false,
+          "placeholder": "0",
+          "default": 0,
+          "validation": { "min": 0 }
+        },
+        {
+          "name": "isArchived",
+          "label": "Archived",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "name": "Task",
+      "label": "Tasks",
+      "icon": "check-square",
+      "fields": [
+        {
+          "name": "title",
+          "label": "Task Title",
+          "type": "text",
+          "required": true,
+          "searchable": true,
+          "placeholder": "Enter task title",
+          "default": "",
+          "validation": { "minLength": 2, "maxLength": 200 }
+        },
+        {
+          "name": "projectId",
+          "label": "Project",
+          "type": "relation",
+          "required": true,
+          "relatesTo": "Project",
+          "displayField": "title",
+          "placeholder": "Select a project",
+          "default": ""
+        },
+        {
+          "name": "status",
+          "label": "Status",
+          "type": "select",
+          "required": true,
+          "options": ["todo", "in_progress", "review", "done", "blocked"],
+          "default": "todo"
+        },
+        {
+          "name": "priority",
+          "label": "Priority",
+          "type": "select",
+          "options": ["low", "medium", "high", "critical"],
+          "default": "medium"
+        },
+        {
+          "name": "assignee",
+          "label": "Assignee Email",
+          "type": "email",
+          "required": false,
+          "placeholder": "assignee@example.com",
+          "default": ""
+        },
+        {
+          "name": "estimatedHours",
+          "label": "Estimated Hours",
+          "type": "number",
+          "required": false,
+          "placeholder": "0",
+          "default": 0,
+          "validation": { "min": 0, "max": 1000 }
+        },
+        {
+          "name": "dueDate",
+          "label": "Due Date",
+          "type": "date",
+          "required": false,
+          "placeholder": "YYYY-MM-DD",
+          "default": ""
+        },
+        {
+          "name": "tags",
+          "label": "Tags",
+          "type": "text",
+          "required": false,
+          "placeholder": "e.g. frontend, urgent",
+          "default": ""
+        },
+        {
+          "name": "notes",
+          "label": "Notes",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Additional notes",
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "TeamMember",
+      "label": "Team Members",
+      "icon": "users",
+      "fields": [
+        {
+          "name": "name",
+          "label": "Full Name",
+          "type": "text",
+          "required": true,
+          "searchable": true,
+          "placeholder": "John Doe",
+          "default": ""
+        },
+        {
+          "name": "email",
+          "label": "Email",
+          "type": "email",
+          "required": true,
+          "unique": true,
+          "placeholder": "john@example.com",
+          "default": ""
+        },
+        {
+          "name": "role",
+          "label": "Role",
+          "type": "select",
+          "required": true,
+          "options": ["developer", "designer", "manager", "qa", "devops"],
+          "default": "developer"
+        },
+        {
+          "name": "department",
+          "label": "Department",
+          "type": "text",
+          "required": false,
+          "placeholder": "e.g. Engineering",
+          "default": ""
+        },
+        {
+          "name": "joinedAt",
+          "label": "Joined Date",
+          "type": "date",
+          "required": false,
+          "placeholder": "YYYY-MM-DD",
+          "default": ""
+        },
+        {
+          "name": "isActive",
+          "label": "Active",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "icon": "layout-dashboard",
+      "path": "/dashboard",
+      "layout": "default",
+      "components": [
+        {
+          "type": "table",
+          "id": "recent-projects",
+          "label": "Recent Projects",
+          "model": "Project",
+          "columns": ["title", "status", "priority", "dueDate"],
+          "pageSize": 5,
+          "sortBy": "createdAt",
+          "sortOrder": "desc"
+        },
+        {
+          "type": "table",
+          "id": "high-priority-tasks",
+          "label": "High Priority Tasks",
+          "model": "Task",
+          "columns": ["title", "status", "assignee", "dueDate"],
+          "filter": { "priority": "high" },
+          "pageSize": 5
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "icon": "folder",
+      "path": "/projects",
+      "layout": "default",
+      "components": [
+        {
+          "type": "table",
+          "id": "projects-table",
+          "model": "Project",
+          "columns": ["title", "status", "priority", "startDate", "dueDate", "budget"],
+          "searchable": true,
+          "filterable": ["status", "priority"],
+          "pageSize": 20,
+          "actions": ["create", "edit", "delete", "view"]
+        }
+      ]
+    },
+    {
+      "id": "tasks",
+      "label": "Tasks",
+      "icon": "check-square",
+      "path": "/tasks",
+      "layout": "default",
+      "components": [
+        {
+          "type": "table",
+          "id": "tasks-table",
+          "model": "Task",
+          "columns": ["title", "projectId", "status", "priority", "assignee", "dueDate"],
+          "searchable": true,
+          "filterable": ["status", "priority", "projectId"],
+          "pageSize": 25,
+          "actions": ["create", "edit", "delete"]
+        }
+      ]
+    },
+    {
+      "id": "team",
+      "label": "Team",
+      "icon": "users",
+      "path": "/team",
+      "layout": "default",
+      "components": [
+        {
+          "type": "table",
+          "id": "team-table",
+          "model": "TeamMember",
+          "columns": ["name", "email", "role", "department", "isActive"],
+          "searchable": true,
+          "filterable": ["role", "isActive"],
+          "actions": ["create", "edit", "delete"]
+        }
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "wf-project-created",
+      "name": "On Project Created",
+      "trigger": {
+        "type": "onRecordCreate",
+        "model": "Project"
+      },
+      "steps": [
+        {
+          "id": "step-1",
+          "type": "log",
+          "config": {
+            "message": "New project created: {{record.title}} with priority {{record.priority}}"
+          }
+        },
+        {
+          "id": "step-2",
+          "type": "condition",
+          "config": {
+            "field": "record.priority",
+            "operator": "equals",
+            "value": "critical"
+          },
+          "onTrue": "step-3",
+          "onFalse": "step-end"
+        },
+        {
+          "id": "step-3",
+          "type": "notification",
+          "config": {
+            "title": "Critical Project Created",
+            "message": "A critical priority project '{{record.title}}' was just created.",
+            "type": "warning"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wf-task-done",
+      "name": "On Task Completed",
+      "trigger": {
+        "type": "onRecordUpdate",
+        "model": "Task",
+        "watchFields": ["status"]
+      },
+      "steps": [
+        {
+          "id": "step-1",
+          "type": "condition",
+          "config": {
+            "field": "record.status",
+            "operator": "equals",
+            "value": "done"
+          },
+          "onTrue": "step-2",
+          "onFalse": "step-end"
+        },
+        {
+          "id": "step-2",
+          "type": "notification",
+          "config": {
+            "title": "Task Completed",
+            "message": "Task '{{record.title}}' has been marked as done.",
+            "type": "success"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wf-manual-report",
+      "name": "Generate Status Report",
+      "trigger": {
+        "type": "manual",
+        "label": "Run Report"
+      },
+      "steps": [
+        {
+          "id": "step-1",
+          "type": "query",
+          "config": {
+            "model": "Project",
+            "filter": { "status": "active" },
+            "outputVar": "activeProjects"
+          }
+        },
+        {
+          "id": "step-2",
+          "type": "notification",
+          "config": {
+            "title": "Report Ready",
+            "message": "Status report generated successfully.",
+            "type": "info"
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "required": true,
+    "providers": ["credentials", "google", "github"],
+    "sessionStrategy": "jwt"
+  },
+  "settings": {
+    "pagination": {
+      "defaultPageSize": 20,
+      "maxPageSize": 100
+    },
+    "softDelete": true,
+    "timestamps": true
+  }
+}
