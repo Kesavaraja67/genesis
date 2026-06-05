@@ -53,16 +53,13 @@ export function LoginForm({ mode }: LoginFormProps) {
       });
       console.log("NextAuth Result:", result);
 
-      if (result?.error) {
-        console.log("NextAuth returned error:", result.error);
-        toast.error(result.error);
+      if (result?.error || result?.url?.includes("error=")) {
+        console.log("NextAuth returned error or error URL:", result?.error || result?.url);
+        toast.error("Invalid email or password");
       } else {
-        console.log("No error from NextAuth. Checking cookies:", document.cookie);
-        // Delay the redirect by 3 seconds so the user can see the console logs!
-        setTimeout(() => {
-          console.log("Executing hard redirect to /dashboard");
-          window.location.href = "/dashboard";
-        }, 3000);
+        console.log("No error from NextAuth. Executing hard redirect to /dashboard");
+        // HARD REDIRECT to bypass Next.js router cache
+        window.location.href = "/dashboard";
       }
     } catch (e: unknown) {
       console.error("Login Exception in catch block:", e);

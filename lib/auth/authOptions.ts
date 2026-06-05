@@ -30,16 +30,16 @@ export const authConfig: NextAuthConfig = {
           where: { email: credentials.email as string },
         });
 
-        if (!user) throw new Error("No user found with this email");
+        if (!user) throw new Error("CredentialsSignin");
         if (!user.passwordHash) {
-          throw new Error(`Please sign in with ${user.provider}`);
+          throw new Error("CredentialsSignin");
         }
 
         const isValid = await bcrypt.compare(
           credentials.password as string,
           user.passwordHash
         );
-        if (!isValid) throw new Error("Invalid password");
+        if (!isValid) throw new Error("CredentialsSignin");
 
         return {
           id: user.id,
