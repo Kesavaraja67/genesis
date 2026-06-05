@@ -52,6 +52,9 @@ export function LoginForm({ mode }: LoginFormProps) {
         toast.error(result.error);
       }
     } catch (e: unknown) {
+      if (e instanceof Error && e.message === "NEXT_REDIRECT") {
+        throw e;
+      }
       console.error("Login Exception:", e);
       toast.error("An unexpected error occurred during login.");
     } finally {
