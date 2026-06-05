@@ -11,6 +11,7 @@ import { prisma } from "../db";
 export const authConfig: NextAuthConfig = {
   trustHost: true,
   secret: process.env.AUTH_SECRET,
+  useSecureCookies: process.env.NODE_ENV === "production",
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
