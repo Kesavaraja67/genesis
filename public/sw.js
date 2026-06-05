@@ -32,9 +32,14 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate' || (event.request.method === 'GET' && event.request.headers.get('accept').includes('text/html'))) {
+  // Bypass service worker entirely for non-GET requests and Next.js APIs
+  if (event.request.method !== 'GET' || event.request.url.includes('/api/') || event.request.url.includes('/_next/')) {
+    return;
+  }
+
+  if (event.request.mode === 'navigate' || (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'))) {
     event.respondWith(
-      fetch(event.request.url).catch((error) => {
+      fetch(event.request).catch(() => {
         return caches.match(OFFLINE_URL);
       })
     );
