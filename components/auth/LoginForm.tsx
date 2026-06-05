@@ -47,13 +47,9 @@ export function LoginForm({ mode }: LoginFormProps) {
       }
 
       const result = await loginAction(form.email, form.password);
-      console.log("NextAuth Result:", result);
 
       if (result?.error) {
         toast.error(result.error);
-      } else if (result?.success) {
-        router.push("/dashboard");
-        router.refresh();
       }
     } catch (e: unknown) {
       console.error("Login Exception:", e);
