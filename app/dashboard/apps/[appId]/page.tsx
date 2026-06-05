@@ -310,7 +310,7 @@ export default async function AppOverviewPage({ params }: { params: Promise<{ ap
           </div>
         ) : (
           <div>
-            {app.workflows.map((wf, idx) => (
+            {app.workflows.map((wf: { id: string; name: string; triggerType: string; isActive: boolean }, idx: number) => (
               <div
                 key={wf.id}
                 style={{
