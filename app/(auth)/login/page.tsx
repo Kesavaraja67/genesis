@@ -1,5 +1,6 @@
 // app/(auth)/login/page.tsx — Palette 3 per spec Section 5.2
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { OAuthButtons } from "@/components/auth/OAuthButtons";
@@ -105,7 +106,9 @@ export default function LoginPage() {
             Sign in to your Genesis workspace
           </p>
 
-          <LoginForm mode="login" />
+          <Suspense fallback={<div style={{height: "200px"}} />}>
+            <LoginForm mode="login" />
+          </Suspense>
 
           {/* Divider */}
           <div
