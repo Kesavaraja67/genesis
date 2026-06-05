@@ -57,9 +57,12 @@ export function LoginForm({ mode }: LoginFormProps) {
         console.log("NextAuth returned error:", result.error);
         toast.error(result.error);
       } else {
-        console.log("No error from NextAuth. Executing hard redirect to /dashboard");
-        // HARD REDIRECT to bypass Next.js router cache
-        window.location.href = "/dashboard";
+        console.log("No error from NextAuth. Checking cookies:", document.cookie);
+        // Delay the redirect by 3 seconds so the user can see the console logs!
+        setTimeout(() => {
+          console.log("Executing hard redirect to /dashboard");
+          window.location.href = "/dashboard";
+        }, 3000);
       }
     } catch (e: unknown) {
       console.error("Login Exception in catch block:", e);
