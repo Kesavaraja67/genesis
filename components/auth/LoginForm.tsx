@@ -2,7 +2,7 @@
 // components/auth/LoginForm.tsx
 
 import { useState } from "react";
-import { loginAction } from "@/lib/auth/actions";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/Input";
 import toast from "react-hot-toast";
@@ -46,15 +46,19 @@ export function LoginForm({ mode }: LoginFormProps) {
         toast.success("Account created! Signing you in…");
       }
 
-      const result = await loginAction(form.email, form.password);
+      const result = await signIn("credentials", {
+        email: form.email,
+        password: form.password,
+        redirect: false,
+      });
 
       if (result?.error) {
         toast.error(result.error);
+      } else {
+        // HARD REDIRECT to bypass Next.js router cache
+        window.location.href = "/dashboard";
       }
     } catch (e: unknown) {
-      if (e instanceof Error && e.message === "NEXT_REDIRECT") {
-        throw e;
-      }
       console.error("Login Exception:", e);
       toast.error("An unexpected error occurred during login.");
     } finally {
