@@ -247,7 +247,7 @@ export default async function AppOverviewPage({ params }: { params: Promise<{ ap
                 Fields
               </span>
             </div>
-            {app.models.map((model, idx) => {
+            {app.models.map((model: { id: string; name: string; schema: unknown }, idx: number) => {
               const schema = model.schema as { fields?: unknown[] };
               return (
                 <div
