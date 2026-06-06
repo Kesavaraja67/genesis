@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { OAuthButtons } from "@/components/auth/OAuthButtons";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Create Account",
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function RegisterPage() {
+  redirect("/dashboard");
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md animate-slide-up">

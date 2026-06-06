@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { OAuthButtons } from "@/components/auth/OAuthButtons";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Sign In",
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
+  redirect("/dashboard");
   return (
     <div
       style={{
