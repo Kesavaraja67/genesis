@@ -15,16 +15,16 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", nextUrl));
   }
 
-  // Protect dashboard routes
-  if (!isLoggedIn && path.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/login", nextUrl));
-  }
+  // Protect dashboard routes (TEMPORARILY BYPASSED)
+  // if (!isLoggedIn && path.startsWith("/dashboard")) {
+  //   return NextResponse.redirect(new URL("/login", nextUrl));
+  // }
 
   // API route protection — apps and runtime require auth
-  // (runtime public-app exceptions are handled inside the route handlers)
-  if (!isLoggedIn && path.startsWith("/api/apps")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // (TEMPORARILY BYPASSED)
+  // if (!isLoggedIn && path.startsWith("/api/apps")) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
 
   return NextResponse.next();
 }
