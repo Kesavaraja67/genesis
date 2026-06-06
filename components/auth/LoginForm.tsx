@@ -54,13 +54,17 @@ export function LoginForm({ mode }: LoginFormProps) {
         toast.success("Account created! Signing you in…");
       }
 
-      // Remove redirect: false so NextAuth performs a standard HTTP 302 redirect.
-      // This guarantees the Set-Cookie header is sent alongside the Location header.
-      await signIn("credentials", {
+      const res = await signIn("credentials", {
         email: form.email,
         password: form.password,
-        callbackUrl: "/dashboard",
+        redirect: false,
       });
+
+      if (res?.error) {
+        toast.error("Invalid email or password");
+      } else {
+        window.location.href = "/dashboard";
+      }
     } catch (e: unknown) {
       console.error("Login Exception in catch block:", e);
       toast.error("An unexpected error occurred during login.");
