@@ -1,6 +1,6 @@
 // app/(dashboard)/apps/page.tsx — All Apps per Palette 3
 import type { Metadata } from "next";
-import { auth } from "@/auth";
+import { getAuthSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { StatusBadge } from "@/components/ui/Badge";
@@ -9,7 +9,7 @@ import { formatDistanceToNow } from "date-fns";
 export const metadata: Metadata = { title: "My Apps" };
 
 export default async function AppsPage() {
-  const session = await auth();
+  const session = await getAuthSession();
   const userId = session!.user!.id!;
 
   const apps = await prisma.app.findMany({

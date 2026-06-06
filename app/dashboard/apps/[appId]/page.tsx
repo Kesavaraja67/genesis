@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { auth } from "@/auth";
+import { getAuthSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: "App Overview" };
 export default async function AppOverviewPage({ params }: { params: Promise<{ appId: string }> }) {
   // force TS reload for ExportZipButton
   const { appId } = await params;
-  const session = await auth();
+  const session = await getAuthSession();
 
   const app = await prisma.app.findUnique({
     where: { id: appId },

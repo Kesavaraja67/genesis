@@ -1,5 +1,6 @@
 // app/(auth)/register/page.tsx
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { OAuthButtons } from "@/components/auth/OAuthButtons";
@@ -24,7 +25,9 @@ export default function RegisterPage() {
         <div className="glass rounded-2xl p-8">
           <h2 className="text-xl font-semibold text-white mb-6">Create your account</h2>
 
-          <LoginForm mode="register" />
+          <Suspense fallback={<div style={{height: "200px"}} />}>
+            <LoginForm mode="register" />
+          </Suspense>
 
           <div className="flex items-center gap-3 my-6">
             <div className="flex-1 h-px bg-border" />

@@ -1,17 +1,17 @@
 // app/(dashboard)/layout.tsx
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+// AUTH TEMPORARILY BYPASSED — using getAuthSession to get guest user
+import { getAuthSession } from "@/lib/auth/session";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth();
-  if (!session?.user) redirect("/login");
+  const session = await getAuthSession();
+  const user = session?.user ?? { name: "Guest", email: "" };
 
   return (
     <div className="min-h-screen flex">
-      <Sidebar user={session?.user} />
+      <Sidebar user={user} />
       <main className="flex-1 ml-60 min-h-screen">
         {children}
       </main>

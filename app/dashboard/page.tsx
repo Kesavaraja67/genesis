@@ -1,6 +1,6 @@
 // app/(dashboard)/page.tsx — Dashboard Home per spec Section 5.3
 import type { Metadata } from "next";
-import { auth } from "@/auth";
+import { getAuthSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { StatusBadge } from "@/components/ui/Badge";
@@ -9,25 +9,20 @@ import { formatDistanceToNow } from "date-fns";
 export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
-  const session = await auth();
+  const session = await getAuthSession();
   const userId = session!.user!.id!;
 
-  const [apps, totalRecords] = await Promise.all([
+  const [apps, totalRecords, totalApps, activeWorkflows] = await Promise.all([
     prisma.app.findMany({
       where: { userId },
       include: { _count: { select: { runtimeData: true, workflows: true } } },
       orderBy: { updatedAt: "desc" },
       take: 6,
     }),
-    prisma.runtimeRecord.count({
-      where: { app: { userId } },
-    }),
+    prisma.runtimeRecord.count({ where: { app: { userId } } }),
+    prisma.app.count({ where: { userId } }),
+    prisma.workflow.count({ where: { app: { userId }, isActive: true } }),
   ]);
-
-  const totalApps = await prisma.app.count({ where: { userId } });
-  const activeWorkflows = await prisma.workflow.count({
-    where: { app: { userId }, isActive: true },
-  });
 
   const firstName = session?.user?.name?.split(" ")[0] ?? null;
 
